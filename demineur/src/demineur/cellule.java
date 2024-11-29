@@ -45,6 +45,7 @@ public class cellule {
     public void revelerCellule() {
         this.devoilee = true; // Marque la cellule comme dévoilée
     }
+    
 
     @Override
     public String toString() {
