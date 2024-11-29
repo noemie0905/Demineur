@@ -7,7 +7,7 @@ package demineur;
 /**
  *
  * @author elois
- */
+ */  
 public class cellule {
       // Attributs privés de la classe
     private boolean presenceBombe; // Indique si la cellule contient une bombe
@@ -46,6 +46,12 @@ public class cellule {
         this.devoilee = true; // Marque la cellule comme dévoilée
     }
     
+
+    public boolean getRevelerCellule() {
+        return devoilee;
+    }
+    
+     
 
     @Override
     public String toString() {
