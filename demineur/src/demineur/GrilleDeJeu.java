@@ -84,8 +84,54 @@ public class GrilleDeJeu {
 }
 
     public void revelerCellule(int ligne, int colonne){
-        
+        if (ligne < 0 || ligne >= getNbLignes() || colonne < 0 || colonne >= getNbColonnes()) {
+        return; 
     }
+
+   
+    cellule cellule = matriceCellules[ligne][colonne];
+
+   
+    cellule.revelerCellule();
+
+    if (cellule.getPresenceBombe()) {
+        return; }
+    
+
+    if (cellule.getNbBombesAdjacentes()==0) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i != 0 || j != 0) { 
+                    revelerCellule(ligne + i, colonne + j); 
+                }
+            }
+        }
+    }
+}
+    public boolean getPresenceBombe(int i, int j){
+        if (matriceCellules[i][j].getPresenceBombe()){
+            return true;
+        }else{
+            return false;
+        }
     }
     
+    public boolean toutesCellulesRevelees(){
+       for (int i = 0; i < getNbColonnes(); i++) {
+        for (int j = 0; j < getNbLignes(); j++) {
+            cellule cellule = matriceCellules[i][j];
+            if (!cellule.getPresenceBombe() && !cellule.revelerCellule()) {
+                return false; 
+            }
+        }
+    }
+    return true; 
+    }
+
+    public void setNbBombes(int nbBombes) {
+        this.nbBombes = nbBombes;
+    }
+    
+    }
+
 
