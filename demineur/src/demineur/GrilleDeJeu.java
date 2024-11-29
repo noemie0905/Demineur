@@ -36,6 +36,10 @@ public class GrilleDeJeu {
         return nbColonnes;
     }
 
+    public cellule getMatriceCellules(int i, int j) {
+        return MatriceCellules[i][j];
+    }
+
     public void placerBombesAleatoirement() {
         Random random = new Random();
         int nbBombesplacees = 0;
