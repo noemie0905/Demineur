@@ -6,7 +6,7 @@ package demineur;
 
 /**
  *
- * @author phili
+ * @author elois
  */
 public class Demineur {
 
