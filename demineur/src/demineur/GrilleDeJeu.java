@@ -120,7 +120,7 @@ public class GrilleDeJeu {
        for (int i = 0; i < getNbColonnes(); i++) {
         for (int j = 0; j < getNbLignes(); j++) {
             cellule cellule = matriceCellules[i][j];
-            if (!cellule.getPresenceBombe() && !cellule.revelerCellule()) {
+            if (!cellule.getPresenceBombe() && !cellule.getRevelerCellule()) {
                 return false; 
             }
         }
@@ -128,10 +128,19 @@ public class GrilleDeJeu {
     return true; 
     }
 
-    public void setNbBombes(int nbBombes) {
-        this.nbBombes = nbBombes;
+    @Override
+    public String toString() {
+        for(int i=0; i<=nbLignes;i++){
+            for(int j=0; j<=nbColonnes;j++){
+                
+            }
+        }
     }
+
     
-    }
+    
+} 
+    
+    
 
 
