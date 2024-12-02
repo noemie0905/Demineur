@@ -37,7 +37,7 @@ public class GrilleDeJeu {
     }
 
     public cellule getMatriceCellules(int i, int j) {
-        return MatriceCellules[i][j];
+        return matriceCellules[i][j];
     }
 
     public void placerBombesAleatoirement() {
@@ -90,7 +90,8 @@ public class GrilleDeJeu {
     }
 
     public void revelerCellule(int ligne, int colonne) {
-        if (ligne < 0 || ligne >= getNbLignes() || colonne < 0 || colonne >= getNbColonnes()) {
+        if (ligne >= 0 && ligne < getNbLignes() && colonne >= 0 && colonne < getNbColonnes()) {
+        } else {
             return;
         }
 
@@ -143,12 +144,14 @@ public class GrilleDeJeu {
                 if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getPresenceBombe()) {
                     System.out.print("B");
                 }
-                if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getNbBombesAdjacentes() >= 1&& !matriceCellules[i][j].getPresenceBombe()) {
+                if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getNbBombesAdjacentes() >= 1 && !matriceCellules[i][j].getPresenceBombe()) {
                     System.out.print(matriceCellules[i][j].getNbBombesAdjacentes());
                 }
-                if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getNbBombesAdjacentes() == 0&& !matriceCellules[i][j].getPresenceBombe()) {
+                if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getNbBombesAdjacentes() == 0 && !matriceCellules[i][j].getPresenceBombe()) {
                     System.out.print(" ");
+                }
             }
-        }
 
+        }
+    }
 }
