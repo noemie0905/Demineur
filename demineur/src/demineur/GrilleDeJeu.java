@@ -12,13 +12,18 @@ import java.util.Random;
  */
 public class GrilleDeJeu {
 
-    private cellule[][] matriceCellules;
+    private Cellule[][] matriceCellules;
     private int nbLignes;
     private int nbColonnes;
     int nbBombes;
 
-    public GrilleDeJeu(cellule[][] matriceCellules, int nbLignes, int nbColonnes, int nbBombes) {
+    public GrilleDeJeu(Cellule[][] matriceCellules, int nbLignes, int nbColonnes, int nbBombes) {
         this.matriceCellules = matriceCellules;
+        for(int i = 0; i<nbLignes;i++){
+            for(int j = 0; j<nbColonnes;j++){
+                matriceCellules[i][j]=new Cellule(false,false,0);
+            }
+        }
         this.nbLignes = nbLignes;
         this.nbColonnes = nbColonnes;
         this.nbBombes = nbBombes;
@@ -36,7 +41,7 @@ public class GrilleDeJeu {
         return nbColonnes;
     }
 
-    public cellule getMatriceCellules(int i, int j) {
+    public Cellule getMatriceCellules(int i, int j) {
         return matriceCellules[i][j];
     }
 
@@ -44,8 +49,8 @@ public class GrilleDeJeu {
         Random random = new Random();
         int nbBombesplacees = 0;
         while (nbBombesplacees <= getNbBombes()) {
-            int i = random.nextInt(getNbColonnes());
-            int j = random.nextInt(getNbLignes());
+            int j = random.nextInt(getNbColonnes());
+            int i = random.nextInt(getNbLignes());
             if (!matriceCellules[i][j].getPresenceBombe()) {
                 matriceCellules[i][j].placerBombe();
                 nbBombesplacees += 1;
@@ -57,8 +62,8 @@ public class GrilleDeJeu {
         int nbLignes = getNbLignes();
         int nbColonnes = getNbColonnes();
 
-        for (int i = 0; i < nbColonnes; i++) { // Parcours des colonnes
-            for (int j = 0; j < nbLignes; j++) { // Parcours des lignes
+        for (int i = 0; i < nbLignes; i++) { // Parcours des colonnes
+            for (int j = 0; j < nbColonnes; j++) { // Parcours des lignes
                 // Vérifie si la cellule actuelle n'est pas une bombe
                 if (!matriceCellules[i][j].getPresenceBombe()) {
                     int bombesAdjacentes = 0;
@@ -76,7 +81,7 @@ public class GrilleDeJeu {
                             int voisinY = j + y;
 
                             // Vérifie que les coordonnées sont dans les limites de la grille
-                            if (voisinX >= 0 && voisinX < nbColonnes && voisinY >= 0 && voisinY < nbLignes) {
+                            if (voisinX >= 0 && voisinX < nbLignes && voisinY >= 0 && voisinY < nbColonnes) {
                                 if (matriceCellules[voisinX][voisinY].getPresenceBombe()) {
                                     bombesAdjacentes++;
                                 }
@@ -95,7 +100,7 @@ public class GrilleDeJeu {
             return;
         }
 
-        cellule cellule = matriceCellules[ligne][colonne];
+        Cellule cellule = matriceCellules[ligne][colonne];
 
         cellule.revelerCellule();
 
@@ -125,7 +130,7 @@ public class GrilleDeJeu {
     public boolean toutesCellulesRevelees() {
         for (int i = 0; i < getNbColonnes(); i++) {
             for (int j = 0; j < getNbLignes(); j++) {
-                cellule cellule = matriceCellules[i][j];
+                Cellule cellule = matriceCellules[i][j];
                 if (!cellule.getPresenceBombe() && !cellule.getRevelerCellule()) {
                     return false;
                 }
@@ -135,23 +140,26 @@ public class GrilleDeJeu {
     }
 
     @Override
-    public String toString() {
-        for (int i = 0; i <= nbLignes; i++) {
-            for (int j = 0; j <= nbColonnes; j++) {
-                if (!matriceCellules[i][j].getRevelerCellule()) {
-                    System.out.print("?");
-                }
-                if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getPresenceBombe()) {
-                    System.out.print("B");
-                }
-                if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getNbBombesAdjacentes() >= 1 && !matriceCellules[i][j].getPresenceBombe()) {
-                    System.out.print(matriceCellules[i][j].getNbBombesAdjacentes());
-                }
-                if (matriceCellules[i][j].getRevelerCellule() && matriceCellules[i][j].getNbBombesAdjacentes() == 0 && !matriceCellules[i][j].getPresenceBombe()) {
-                    System.out.print(" ");
-                }
+public String toString() {
+    StringBuilder grille = new StringBuilder();
+    
+    for (int i = 0; i < nbLignes; i++) {
+        for (int j = 0; j < nbColonnes; j++) {
+            if (!matriceCellules[i][j].getRevelerCellule()) {
+                grille.append("?");
+            } else if (matriceCellules[i][j].getPresenceBombe()) {
+                grille.append("B");
+            } else if (matriceCellules[i][j].getNbBombesAdjacentes() >= 1) {
+                grille.append(matriceCellules[i][j].getNbBombesAdjacentes());
+            } else {
+                grille.append(" ");
             }
-
         }
+        // Ajouter un saut de ligne après chaque ligne de la grille
+        grille.append("\n");
     }
+    
+    return grille.toString();
+}
+
 }

@@ -19,7 +19,7 @@ public class Partie {
     // Constructeur de la classe Partie
     public Partie(int nbLignes, int nbColonnes, int nbBombes) {
         // Initialisation de la grille avec les dimensions et le nombre de bombes
-        this.grille = new GrilleDeJeu(new cellule[nbLignes][nbColonnes], nbLignes, nbColonnes, nbBombes);
+        this.grille = new GrilleDeJeu(new Cellule[nbLignes][nbColonnes], nbLignes, nbColonnes, nbBombes);
         this.nombreDeVies = 3;  // Nombre de vies initial
         this.enCours = true;    // La partie commence en état actif
     }
@@ -46,7 +46,7 @@ public class Partie {
         }
 
         // Révéler la cellule spécifiée
-        cellule caseCourante = grille.getMatriceCellules(ligne,colonne);
+        Cellule caseCourante = grille.getMatriceCellules(ligne,colonne);
 
         // Si la cellule contient une bombe
         if (caseCourante.getPresenceBombe()) {
