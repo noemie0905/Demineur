@@ -23,6 +23,8 @@ public class Partie {
         this.nombreDeVies = 3;  // Nombre de vies initial
         this.enCours = true;    // La partie commence en état actif
     }
+    public GrilleDeJeu getGrille() {
+        return grille;}
 
     // Méthode pour initialiser la partie
     public void initialiserPartie() {
@@ -32,6 +34,8 @@ public class Partie {
         this.nombreDeVies = 3;  // Réinitialiser les vies
         this.enCours = true;    // La partie commence
     }
+    
+    
 
     // Méthode pour gérer un tour de jeu
     public void tourDeJeu(int ligne, int colonne) {
