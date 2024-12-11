@@ -1,4 +1,6 @@
-
+ 
+import demineur.Cellule;
+import demineur.GrilleDeJeu;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 
@@ -11,25 +13,136 @@ import javax.swing.JButton;
  *
  * @author elois
  */
+
+    
+import java.awt.GridLayout;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+
+/**
+ * Classe pour gérer l'interface graphique du démineur.
+ */
 public class FenetrePrincipale extends javax.swing.JFrame {
 
-    /**
-     * Creates new form FenetrePrincipale
-     */
-    
-    public FenetrePrincipale() {
+    private GrilleDeJeu grilleDeJeu;
+    private JButton[][] boutonsGrille;
+    private Cellule Cellule;
 
+    public FenetrePrincipale(int nbLignes, int nbColonnes, int nbBombes) {
         initComponents();
-        int nbColonnes = 10; 
-        int nbLignes=10;
-    PanneauGrille.setLayout(new GridLayout(nbLignes, nbColonnes)); 
-    for (int i=0; i < nbLignes; i++) { 
-for (int j=0; j < nbColonnes; j++ ) { 
-JButton bouton_cellule = new JButton(); // création d'un bouton 
-PanneauGrille.add(bouton_cellule); // ajout au Jpanel PanneauGrille 
-} 
-}
+
+        // Initialiser la logique du jeu
+        grilleDeJeu = new GrilleDeJeu(new Cellule[nbLignes][nbColonnes], nbLignes, nbColonnes, nbBombes);
+        grilleDeJeu.placerBombesAleatoirement();
+        grilleDeJeu.calculerBombesAdjacentes();
+
+        // Création de la grille dans le panneau
+        PanneauGrille.setLayout(new GridLayout(nbLignes, nbColonnes));
+        boutonsGrille = new JButton[nbLignes][nbColonnes];
+
+        // Double boucle pour créer les boutons
+        for (int i = 0; i < nbLignes; i++) {
+            for (int j = 0; j < nbColonnes; j++) {
+                JButton bouton_cellule = new JButton();
+                boutonsGrille[i][j] = bouton_cellule; // Stocker les boutons pour un accès futur
+                
+                // Ajouter un ActionListener pour gérer les clics
+                int ligne = i; // Capturer la valeur pour l'utiliser dans le lambda
+                int colonne = j;
+                bouton_cellule.addActionListener(e -> boutonClique(ligne, colonne));
+
+                PanneauGrille.add(bouton_cellule);
+            }
+        }
+
+        pack(); // Ajuster la fenêtre
     }
+
+    /**
+     * Méthode appelée lorsqu'un bouton est cliqué.
+     * @param ligne La ligne du bouton cliqué
+     * @param colonne La colonne du bouton cliqué
+     */
+    private void boutonClique(int ligne, int colonne) {
+        Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+
+        if (cellule.getRevelerCellule()) {
+            return; // Cellule déjà dévoilée
+        }
+
+        grilleDeJeu.revelerCellule(ligne, colonne);
+
+        if (cellule.getPresenceBombe()) {
+            // Bombe cliquée, partie perdue
+            boutonsGrille[ligne][colonne].setText("B");
+            JOptionPane.showMessageDialog(this, "Oh non ! Vous avez cliqué sur une bombe !", "Défaite", JOptionPane.ERROR_MESSAGE);
+            afficherGrilleComplete();
+            return;
+        }
+
+        // Mettre à jour l'affichage de la cellule cliquée
+        mettreAJourAffichageCellule(ligne, colonne);
+
+        // Vérifier si le joueur a gagné
+        if (grilleDeJeu.toutesCellulesRevelees()) {
+            JOptionPane.showMessageDialog(this, "Félicitations ! Vous avez gagné !", "Victoire", JOptionPane.INFORMATION_MESSAGE);
+            afficherGrilleComplete();
+        }
+    }
+
+    /**
+     * Met à jour l'affichage d'une cellule.
+     */
+    private void mettreAJourAffichageCellule(int ligne, int colonne) {
+        Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+        JButton bouton = boutonsGrille[ligne][colonne];
+
+        if (cellule.getRevelerCellule()) {
+            if (cellule.getPresenceBombe()) {
+                bouton.setText("B");
+            } else if (cellule.getNbBombesAdjacentes() > 0) {
+                bouton.setText(String.valueOf(cellule.getNbBombesAdjacentes()));
+            } else {
+                bouton.setText(" ");
+            }
+            bouton.setEnabled(false);
+        }
+    }
+
+    /**
+     * Affiche la grille complète (utile à la fin du jeu).
+     */
+    private void afficherGrilleComplete() {
+        for (int i = 0; i < grilleDeJeu.getNbLignes(); i++) {
+            for (int j = 0; j < grilleDeJeu.getNbColonnes(); j++) {
+                mettreAJourAffichageCellule(i, j);
+            }
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void initComponents() {
+        PanneauGrille = new javax.swing.JPanel();
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new java.awt.BorderLayout());
+        PanneauGrille.setLayout(new java.awt.GridLayout(10, 10));
+        getContentPane().add(PanneauGrille, java.awt.BorderLayout.CENTER);
+        pack();
+    }
+
+    /**
+     * Lancement de la fenêtre principale.
+     */
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(() -> {
+            new FenetrePrincipale(10, 10, 10).setVisible(true);
+        });
+    }
+
+    private javax.swing.JPanel PanneauGrille;
+}
+
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
