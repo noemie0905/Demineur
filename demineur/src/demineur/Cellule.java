@@ -43,8 +43,10 @@ public class Cellule {
 
     // Méthode pour révéler la cellule
     public void revelerCellule() {
-        this.devoilee = true; // Marque la cellule comme dévoilée
+    if (!devoilee) {
+        devoilee = true;
     }
+}
     
 
     public boolean getRevelerCellule() {
