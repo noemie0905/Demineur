@@ -96,10 +96,10 @@ public class FenetrePrincipale extends javax.swing.JFrame {
      * @param ligne La ligne de la cellule
      * @param colonne La colonne de la cellule
      */
-    private void revelerCelluleEtPropager(int ligne, int colonne) {
+     private void revelerCelluleEtPropager(int ligne, int colonne) {
         Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+        
         if (!cellule.getRevelerCellule()) {
-            grilleDeJeu.revelerCellule(ligne, colonne);
             mettreAJourAffichageCellule(ligne, colonne);
 
             if (cellule.getNbBombesAdjacentes() == 0) {
@@ -109,25 +109,26 @@ public class FenetrePrincipale extends javax.swing.JFrame {
                         int nouvelleLigne = ligne + i;
                         int nouvelleColonne = colonne + j;
 
-                        if (grilleDeJeu.revelerCellule(nouvelleLigne, nouvelleColonne) && !(i == 0 && j == 0)) {
-                            revelerCelluleEtPropager(nouvelleLigne, nouvelleColonne);
+                        if (nouvelleLigne >= 0 && nouvelleLigne < grilleDeJeu.getNbLignes() &&
+                            nouvelleColonne >= 0 && nouvelleColonne < grilleDeJeu.getNbColonnes() &&
+                            !(i == 0 && j == 0)) {
+                            Cellule celluleVoisine = grilleDeJeu.getMatriceCellules(nouvelleLigne, nouvelleColonne);
+                            if (!celluleVoisine.getRevelerCellule()) {
+                                boutonClique(nouvelleLigne, nouvelleColonne);
+                            }
                         }
                     }
                 }
             }
         }
     }
+    
     /**
      * Met à jour l'affichage d'une cellule.
      */
-    private void mettreAJourAffichageCellule(int ligne, int colonne) {
+     private void mettreAJourAffichageCellule(int ligne, int colonne) {
         Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
         JButton bouton = boutonsGrille[ligne][colonne];
-        System.out.println("Cellule (" + ligne + ", " + colonne + ")");
-    System.out.println("Révélée : " + cellule.getRevelerCellule());
-    System.out.println("Présence bombe : " + cellule.getPresenceBombe());
-    System.out.println("Bombes adjacentes : " + cellule.getNbBombesAdjacentes());
-
 
         if (cellule.getRevelerCellule()) {
             if (cellule.getPresenceBombe()) {
@@ -142,6 +143,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         bouton.revalidate();
         bouton.repaint();
     }
+
 
     
     private void afficherGrilleComplete() {
