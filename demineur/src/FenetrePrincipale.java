@@ -77,19 +77,46 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             boutonsGrille[ligne][colonne].setText("B");
             JOptionPane.showMessageDialog(this, "Oh non ! Vous avez cliqué sur une bombe !", "Défaite", JOptionPane.ERROR_MESSAGE);
             afficherGrilleComplete();
+            desactiverGrille(); // Désactiver tous les boutons
             return;
         }
 
         // Mettre à jour l'affichage de la cellule cliquée
-        mettreAJourAffichageCellule(ligne, colonne);
+        revelerCelluleEtPropager(ligne, colonne);
 
         // Vérifier si le joueur a gagné
         if (grilleDeJeu.toutesCellulesRevelees()) {
             JOptionPane.showMessageDialog(this, "Félicitations ! Vous avez gagné !", "Victoire", JOptionPane.INFORMATION_MESSAGE);
             afficherGrilleComplete();
+            desactiverGrille();
         }
     }
+/**
+     * Révèle une cellule et propage si elle est vide.
+     * @param ligne La ligne de la cellule
+     * @param colonne La colonne de la cellule
+     */
+    private void revelerCelluleEtPropager(int ligne, int colonne) {
+        Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+        if (!cellule.getRevelerCellule()) {
+            grilleDeJeu.revelerCellule(ligne, colonne);
+            mettreAJourAffichageCellule(ligne, colonne);
 
+            if (cellule.getNbBombesAdjacentes() == 0) {
+                // Propage aux cellules adjacentes
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        int nouvelleLigne = ligne + i;
+                        int nouvelleColonne = colonne + j;
+
+                        if (grilleDeJeu.revelerCellule(nouvelleLigne, nouvelleColonne) && !(i == 0 && j == 0)) {
+                            revelerCelluleEtPropager(nouvelleLigne, nouvelleColonne);
+                        }
+                    }
+                }
+            }
+        }
+    }
     /**
      * Met à jour l'affichage d'une cellule.
      */
@@ -125,7 +152,13 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         }
     }
 
-   
+   private void desactiverGrille() {
+        for (int i = 0; i < grilleDeJeu.getNbLignes(); i++) {
+            for (int j = 0; j < grilleDeJeu.getNbColonnes(); j++) {
+                boutonsGrille[i][j].setEnabled(false);
+            }
+        }
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
