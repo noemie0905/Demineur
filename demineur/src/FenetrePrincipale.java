@@ -96,6 +96,11 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private void mettreAJourAffichageCellule(int ligne, int colonne) {
         Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
         JButton bouton = boutonsGrille[ligne][colonne];
+        System.out.println("Cellule (" + ligne + ", " + colonne + ")");
+    System.out.println("Révélée : " + cellule.getRevelerCellule());
+    System.out.println("Présence bombe : " + cellule.getPresenceBombe());
+    System.out.println("Bombes adjacentes : " + cellule.getNbBombesAdjacentes());
+
 
         if (cellule.getRevelerCellule()) {
             if (cellule.getPresenceBombe()) {
@@ -107,6 +112,8 @@ public class FenetrePrincipale extends javax.swing.JFrame {
             }
             bouton.setEnabled(false);
         }
+        bouton.revalidate();
+        bouton.repaint();
     }
 
     
