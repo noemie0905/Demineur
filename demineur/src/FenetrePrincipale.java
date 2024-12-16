@@ -82,7 +82,11 @@ private void boutonClique(int ligne, int colonne) {
     System.exit(0); // Fermer l'application
     return;
 }
-
+// Vérifier si toutes les cellules non-bombes sont révélées
+if (verifierVictoire()) {
+    JOptionPane.showMessageDialog(this, "Bravo ! Vous avez gagné !", "Victoire", JOptionPane.INFORMATION_MESSAGE);
+    System.exit(0); // Fermer l'application
+}
     // Mettre à jour l'affichage et propager si nécessaire
     revelerCelluleEtPropager(ligne, colonne);  // Propagation si la cellule est vide
 }
@@ -158,6 +162,19 @@ private void desactiverBoutons() {
             }
         }
     }
+    
+    private boolean verifierVictoire() {
+    for (int i = 0; i < grilleDeJeu.getNbLignes(); i++) {
+        for (int j = 0; j < grilleDeJeu.getNbColonnes(); j++) {
+            Cellule cellule = grilleDeJeu.getMatriceCellules(i, j);
+            // Si une cellule sans bombe n'est pas révélée, ce n'est pas encore gagné
+            if (!cellule.getPresenceBombe() && !cellule.getRevelerCellule()) {
+                return false;
+            }
+        }
+    }
+    return true; // Toutes les cellules non-bombes sont révélées
+}
 
    
     @SuppressWarnings("unchecked")
