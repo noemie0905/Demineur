@@ -119,7 +119,8 @@ if (verifierVictoire()) {
                     Cellule celluleVoisine = grilleDeJeu.getMatriceCellules(nouvelleLigne, nouvelleColonne);
                     // Ne pas révéler la cellule si elle est déjà révélée
                     if (!celluleVoisine.getRevelerCellule()) {
-                        boutonClique(nouvelleLigne, nouvelleColonne);  // Révéler la cellule voisine
+                        boutonClique(nouvelleLigne, nouvelleColonne);
+                        mettreAJourAffichageCellule(nouvelleLigne, nouvelleColonne);  // Mettre à jour l'affichage de la cellule// Révéler la cellule voisine
                     }
                 }
             }
