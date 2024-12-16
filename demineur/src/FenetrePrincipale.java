@@ -66,9 +66,9 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 private void boutonClique(int ligne, int colonne) {
     Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
 
-    if (cellule.getRevelerCellule()) {
-        return; // Cellule déjà dévoilée
-    }
+    //if (cellule.getRevelerCellule()) {
+        //return; // Cellule déjà dévoilée
+    //}
 
     grilleDeJeu.revelerCellule(ligne, colonne);  // Révéler la cellule
 
