@@ -74,13 +74,14 @@ private void boutonClique(int ligne, int colonne) {
 
     mettreAJourAffichageCellule(ligne, colonne);  // Mettre à jour l'affichage de cette cellule
 
-    if (cellule.getPresenceBombe()) {
-        // Bombe cliquée, partie perdue
-        boutonsGrille[ligne][colonne].setText("B");
-        JOptionPane.showMessageDialog(this, "Oh non ! Vous avez cliqué sur une bombe !", "Défaite", JOptionPane.ERROR_MESSAGE);
-        afficherGrilleComplete();
-        return;
-    }
+   if (cellule.getPresenceBombe()) {
+    boutonsGrille[ligne][colonne].setText("B");
+    JOptionPane.showMessageDialog(this, "Oh non ! Vous avez cliqué sur une bombe !", "Défaite", JOptionPane.ERROR_MESSAGE);
+    afficherGrilleComplete();
+    desactiverBoutons(); // Désactiver tous les boutons
+    System.exit(0); // Fermer l'application
+    return;
+}
 
     // Mettre à jour l'affichage et propager si nécessaire
     revelerCelluleEtPropager(ligne, colonne);  // Propagation si la cellule est vide
@@ -142,7 +143,13 @@ private void boutonClique(int ligne, int colonne) {
 }
 
 
-
+private void desactiverBoutons() {
+    for (int i = 0; i < boutonsGrille.length; i++) {
+        for (int j = 0; j < boutonsGrille[i].length; j++) {
+            boutonsGrille[i][j].setEnabled(false); // Désactiver tous les boutons
+        }
+    }
+}
     
     private void afficherGrilleComplete() {
         for (int i = 0; i < grilleDeJeu.getNbLignes(); i++) {
