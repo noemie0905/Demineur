@@ -63,86 +63,84 @@ public class FenetrePrincipale extends javax.swing.JFrame {
      * @param ligne La ligne du bouton cliqué
      * @param colonne La colonne du bouton cliqué
      */
-    private void boutonClique(int ligne, int colonne) {
-        Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+private void boutonClique(int ligne, int colonne) {
+    Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
 
-        if (cellule.getRevelerCellule()) {
-            return; // Cellule déjà dévoilée
-        }
-
-        grilleDeJeu.revelerCellule(ligne, colonne);
-
-        if (cellule.getPresenceBombe()) {
-            // Bombe cliquée, partie perdue
-            boutonsGrille[ligne][colonne].setText("B");
-            JOptionPane.showMessageDialog(this, "Oh non ! Vous avez cliqué sur une bombe !", "Défaite", JOptionPane.ERROR_MESSAGE);
-            afficherGrilleComplete();
-            desactiverGrille(); // Désactiver tous les boutons
-            return;
-        }
-
-        // Mettre à jour l'affichage de la cellule cliquée
-        revelerCelluleEtPropager(ligne, colonne);
-
-        // Vérifier si le joueur a gagné
-        if (grilleDeJeu.toutesCellulesRevelees()) {
-            JOptionPane.showMessageDialog(this, "Félicitations ! Vous avez gagné !", "Victoire", JOptionPane.INFORMATION_MESSAGE);
-            afficherGrilleComplete();
-            desactiverGrille();
-        }
+    if (cellule.getRevelerCellule()) {
+        return; // Cellule déjà dévoilée
     }
-/**
-     * Révèle une cellule et propage si elle est vide.
-     * @param ligne La ligne de la cellule
-     * @param colonne La colonne de la cellule
-     */
-     private void revelerCelluleEtPropager(int ligne, int colonne) {
-        Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
-        
-        if (!cellule.getRevelerCellule()) {
-            mettreAJourAffichageCellule(ligne, colonne);
 
-            if (cellule.getNbBombesAdjacentes() == 0) {
-                // Propage aux cellules adjacentes
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        int nouvelleLigne = ligne + i;
-                        int nouvelleColonne = colonne + j;
+    grilleDeJeu.revelerCellule(ligne, colonne);  // Révéler la cellule
 
-                        if (nouvelleLigne >= 0 && nouvelleLigne < grilleDeJeu.getNbLignes() &&
-                            nouvelleColonne >= 0 && nouvelleColonne < grilleDeJeu.getNbColonnes() &&
-                            !(i == 0 && j == 0)) {
-                            Cellule celluleVoisine = grilleDeJeu.getMatriceCellules(nouvelleLigne, nouvelleColonne);
-                            if (!celluleVoisine.getRevelerCellule()) {
-                                boutonClique(nouvelleLigne, nouvelleColonne);
-                            }
-                        }
+    mettreAJourAffichageCellule(ligne, colonne);  // Mettre à jour l'affichage de cette cellule
+
+    if (cellule.getPresenceBombe()) {
+        // Bombe cliquée, partie perdue
+        boutonsGrille[ligne][colonne].setText("B");
+        JOptionPane.showMessageDialog(this, "Oh non ! Vous avez cliqué sur une bombe !", "Défaite", JOptionPane.ERROR_MESSAGE);
+        afficherGrilleComplete();
+        return;
+    }
+
+    // Mettre à jour l'affichage et propager si nécessaire
+    revelerCelluleEtPropager(ligne, colonne);  // Propagation si la cellule est vide
+}
+
+
+   
+     
+    private void revelerCelluleEtPropager(int ligne, int colonne) {
+    Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+
+    // Si la cellule est déjà révélée, on ne fait rien
+    if (cellule.getRevelerCellule()) {
+        return;
+    }
+
+    mettreAJourAffichageCellule(ligne, colonne);  // Mettre à jour l'affichage
+
+    // Si la cellule est vide (pas de bombes adjacentes), on propage la révélation
+    if (cellule.getNbBombesAdjacentes() == 0) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                int nouvelleLigne = ligne + i;
+                int nouvelleColonne = colonne + j;
+
+                // Vérifier si la nouvelle cellule est valide et non déjà révélée
+                if (nouvelleLigne >= 0 && nouvelleLigne < grilleDeJeu.getNbLignes() &&
+                    nouvelleColonne >= 0 && nouvelleColonne < grilleDeJeu.getNbColonnes() &&
+                    !(i == 0 && j == 0)) {
+                    
+                    Cellule celluleVoisine = grilleDeJeu.getMatriceCellules(nouvelleLigne, nouvelleColonne);
+                    // Ne pas révéler la cellule si elle est déjà révélée
+                    if (!celluleVoisine.getRevelerCellule()) {
+                        boutonClique(nouvelleLigne, nouvelleColonne);  // Révéler la cellule voisine
                     }
                 }
             }
         }
     }
-    
-    /**
-     * Met à jour l'affichage d'une cellule.
-     */
-     private void mettreAJourAffichageCellule(int ligne, int colonne) {
-        Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
-        JButton bouton = boutonsGrille[ligne][colonne];
+}
 
-        if (cellule.getRevelerCellule()) {
-            if (cellule.getPresenceBombe()) {
-                bouton.setText("B");
-            } else if (cellule.getNbBombesAdjacentes() > 0) {
-                bouton.setText(String.valueOf(cellule.getNbBombesAdjacentes()));
-            } else {
-                bouton.setText(" ");
-            }
-            bouton.setEnabled(false);
+
+    private void mettreAJourAffichageCellule(int ligne, int colonne) {
+    Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+    JButton bouton = boutonsGrille[ligne][colonne];
+
+    if (cellule.getRevelerCellule()) {
+        if (cellule.getPresenceBombe()) {
+            bouton.setText("B");
+        } else if (cellule.getNbBombesAdjacentes() > 0) {
+            bouton.setText(String.valueOf(cellule.getNbBombesAdjacentes()));
+        } else {
+            bouton.setText(" ");  // Cellule vide
         }
-        bouton.revalidate();
-        bouton.repaint();
+        bouton.setEnabled(false);  // Désactive le bouton après le clic
     }
+    bouton.revalidate();  // Forcer la mise à jour
+    bouton.repaint();     // Repeindre le bouton pour l'affichage
+}
+
 
 
     
@@ -154,13 +152,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
         }
     }
 
-   private void desactiverGrille() {
-        for (int i = 0; i < grilleDeJeu.getNbLignes(); i++) {
-            for (int j = 0; j < grilleDeJeu.getNbColonnes(); j++) {
-                boutonsGrille[i][j].setEnabled(false);
-            }
-        }
-    }
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
