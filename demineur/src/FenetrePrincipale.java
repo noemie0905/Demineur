@@ -1,8 +1,6 @@
  
 import demineur.Cellule;
 import demineur.GrilleDeJeu;
-import java.awt.GridLayout;
-import javax.swing.JButton;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -18,6 +16,7 @@ import javax.swing.JButton;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 /**
  * Classe pour gérer l'interface graphique du démineur.
@@ -54,9 +53,11 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 
                 PanneauGrille.add(bouton_cellule);
             }
+      
         }
 
         pack(); // Ajuster la fenêtre
+        
     }
 
     /**
@@ -66,20 +67,16 @@ public class FenetrePrincipale extends javax.swing.JFrame {
      */
 private void boutonClique(int ligne, int colonne) {
     if (!premiereCaseCliquee) {
-            // Si c'est la première case cliquée, on vérifie qu'elle est vide (sans bombe et sans bombes adjacentes)
             Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
             while (cellule.getPresenceBombe() || cellule.getNbBombesAdjacentes() > 0) {
-                // Si la cellule a une bombe ou des bombes adjacentes, on demande à l'utilisateur de choisir une autre case
                 JOptionPane.showMessageDialog(this, "Choisissez une autre case !", "Erreur case minée", JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            premiereCaseCliquee = true;  // La première case a été choisie, on passe à l'étape suivante
+            premiereCaseCliquee = true;  
         }
     Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
 
-    //if (cellule.getRevelerCellule()) {
-        //return; // Cellule déjà dévoilée
-    //}
+ 
 
     grilleDeJeu.revelerCellule(ligne, colonne);  // Révéler la cellule
 
@@ -98,7 +95,6 @@ if (verifierVictoire()) {
     JOptionPane.showMessageDialog(this, "Bravo ! Vous avez gagné !", "Victoire", JOptionPane.INFORMATION_MESSAGE);
     System.exit(0); // Fermer l'application
 }
-    // Mettre à jour l'affichage et propager si nécessaire
     revelerCelluleEtPropager(ligne, colonne);  // Propagation si la cellule est vide
 }
 
@@ -107,8 +103,6 @@ if (verifierVictoire()) {
      
     private void revelerCelluleEtPropager(int ligne, int colonne) {
     Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
-
-    // Si la cellule est vide (pas de bombes adjacentes), on propage la révélation
     if (cellule.getNbBombesAdjacentes() == 0) {
         for (int i = -1; i <= 1; i++) {
             for (int j = -1; j <= 1; j++) {
@@ -120,11 +114,18 @@ if (verifierVictoire()) {
                    nouvelleColonne >= 0 && nouvelleColonne < grilleDeJeu.getNbColonnes() &&
                    !(i == 0 && j == 0)) {
                     
+
                     Cellule celluleVoisine = grilleDeJeu.getMatriceCellules(nouvelleLigne, nouvelleColonne);
                     // Ne pas révéler la cellule si elle est déjà révélée
+                    if (!celluleVoisine.getPresenceBombe()&&!celluleVoisine.getRevelerCellule()) {
+                        System.out.println(celluleVoisine.getRevelerCellule());
+                        boutonClique(nouvelleLigne,nouvelleColonne);
+                        revelerCelluleEtPropager(nouvelleLigne, nouvelleColonne); // Mettre à jour l'affichage
+                    }
                         mettreAJourAffichageCellule(nouvelleLigne, nouvelleColonne);  // Mettre à jour l'affichage de la cellule// Révéler la cellule voisine
-                       
+                        
                 }
+                
             }
         }
     }
@@ -144,9 +145,7 @@ if (verifierVictoire()) {
             bouton.setText(" ");  // Cellule vide
         }
         bouton.setEnabled(false);  // Désactive le bouton après le clic
-    }
-    bouton.revalidate();  // Forcer la mise à jour
-    bouton.repaint();     // Repeindre le bouton pour l'affichage
+    }    
 }
 
 
@@ -206,10 +205,13 @@ private void desactiverBoutons() {
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
 java.awt.EventQueue.invokeLater(() -> {
-            int nbLignes = 10, nbColonnes = 10, nbBombes = 10;
+            int nbLignes = 10, nbColonnes = 10, nbBombes = 15;
             new FenetrePrincipale(nbLignes, nbColonnes, nbBombes).setVisible(true);
         });
+
     }
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel PanneauGrille;
