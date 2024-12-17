@@ -27,6 +27,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
     private GrilleDeJeu grilleDeJeu;
     private JButton[][] boutonsGrille;
     private Cellule Cellule;
+    private boolean premiereCaseCliquee = false;  // Suivre si la première case a été cliquée
 
     public FenetrePrincipale(int nbLignes, int nbColonnes, int nbBombes) {
         initComponents();
@@ -64,6 +65,16 @@ public class FenetrePrincipale extends javax.swing.JFrame {
      * @param colonne La colonne du bouton cliqué
      */
 private void boutonClique(int ligne, int colonne) {
+    if (!premiereCaseCliquee) {
+            // Si c'est la première case cliquée, on vérifie qu'elle est vide (sans bombe et sans bombes adjacentes)
+            Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
+            while (cellule.getPresenceBombe() || cellule.getNbBombesAdjacentes() > 0) {
+                // Si la cellule a une bombe ou des bombes adjacentes, on demande à l'utilisateur de choisir une autre case
+                JOptionPane.showMessageDialog(this, "Choisissez une autre case !", "Erreur", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            premiereCaseCliquee = true;  // La première case a été choisie, on passe à l'étape suivante
+        }
     Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
 
     //if (cellule.getRevelerCellule()) {
