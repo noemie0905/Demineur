@@ -98,11 +98,11 @@ if (verifierVictoire()) {
     Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
 
     // Si la cellule est déjà révélée, on ne fait rien
-    if (cellule.getRevelerCellule()) {
-        return;
-    }
+    //if (cellule.getRevelerCellule()) {
+       // return;
+    //}
 
-    mettreAJourAffichageCellule(ligne, colonne);  // Mettre à jour l'affichage
+    //mettreAJourAffichageCellule(ligne, colonne);  // Mettre à jour l'affichage
 
     // Si la cellule est vide (pas de bombes adjacentes), on propage la révélation
     if (cellule.getNbBombesAdjacentes() == 0) {
@@ -111,17 +111,15 @@ if (verifierVictoire()) {
                 int nouvelleLigne = ligne + i;
                 int nouvelleColonne = colonne + j;
 
-                // Vérifier si la nouvelle cellule est valide et non déjà révélée
+                 //Vérifier si la nouvelle cellule est valide et non déjà révélée
                 if (nouvelleLigne >= 0 && nouvelleLigne < grilleDeJeu.getNbLignes() &&
-                    nouvelleColonne >= 0 && nouvelleColonne < grilleDeJeu.getNbColonnes() &&
-                    !(i == 0 && j == 0)) {
+                   nouvelleColonne >= 0 && nouvelleColonne < grilleDeJeu.getNbColonnes() &&
+                   !(i == 0 && j == 0)) {
                     
                     Cellule celluleVoisine = grilleDeJeu.getMatriceCellules(nouvelleLigne, nouvelleColonne);
                     // Ne pas révéler la cellule si elle est déjà révélée
-                    if (!celluleVoisine.getRevelerCellule()) {
-                        boutonClique(nouvelleLigne, nouvelleColonne);
                         mettreAJourAffichageCellule(nouvelleLigne, nouvelleColonne);  // Mettre à jour l'affichage de la cellule// Révéler la cellule voisine
-                    }
+                       
                 }
             }
         }
