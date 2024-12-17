@@ -70,7 +70,7 @@ private void boutonClique(int ligne, int colonne) {
             Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
             while (cellule.getPresenceBombe() || cellule.getNbBombesAdjacentes() > 0) {
                 // Si la cellule a une bombe ou des bombes adjacentes, on demande à l'utilisateur de choisir une autre case
-                JOptionPane.showMessageDialog(this, "Choisissez une autre case !", "Erreur", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Choisissez une autre case !", "Erreur case minée", JOptionPane.WARNING_MESSAGE);
                 return;
             }
             premiereCaseCliquee = true;  // La première case a été choisie, on passe à l'étape suivante
@@ -107,13 +107,6 @@ if (verifierVictoire()) {
      
     private void revelerCelluleEtPropager(int ligne, int colonne) {
     Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
-
-    // Si la cellule est déjà révélée, on ne fait rien
-    //if (cellule.getRevelerCellule()) {
-       // return;
-    //}
-
-    //mettreAJourAffichageCellule(ligne, colonne);  // Mettre à jour l'affichage
 
     // Si la cellule est vide (pas de bombes adjacentes), on propage la révélation
     if (cellule.getNbBombesAdjacentes() == 0) {
