@@ -1,6 +1,7 @@
  
 import demineur.Cellule;
 import demineur.GrilleDeJeu;
+import java.awt.Color;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -134,14 +135,17 @@ if (verifierVictoire()) {
     private void mettreAJourAffichageCellule(int ligne, int colonne) {
     Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
     JButton bouton = boutonsGrille[ligne][colonne];
-
+bouton.setOpaque(true);
     if (cellule.getRevelerCellule()) {
         if (cellule.getPresenceBombe()) {
             bouton.setText("\\uD83D\\uDCA3");
         } else if (cellule.getNbBombesAdjacentes() > 0) {
             bouton.setText(String.valueOf(cellule.getNbBombesAdjacentes()));
+            bouton.setBackground(Color.green);
         } else {
-            bouton.setText(" ");  // Cellule vide
+            bouton.setText(" ");
+                        bouton.setBackground(Color.green);
+// Cellule vide
         }
         bouton.setEnabled(false);  // Désactive le bouton après le clic
     }    
