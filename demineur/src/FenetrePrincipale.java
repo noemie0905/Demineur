@@ -118,7 +118,6 @@ if (verifierVictoire()) {
                     Cellule celluleVoisine = grilleDeJeu.getMatriceCellules(nouvelleLigne, nouvelleColonne);
                     // Ne pas révéler la cellule si elle est déjà révélée
                     if (!celluleVoisine.getPresenceBombe()&&!celluleVoisine.getRevelerCellule()) {
-                        System.out.println(celluleVoisine.getRevelerCellule());
                         boutonClique(nouvelleLigne,nouvelleColonne);
                         revelerCelluleEtPropager(nouvelleLigne, nouvelleColonne); // Mettre à jour l'affichage
                     }
