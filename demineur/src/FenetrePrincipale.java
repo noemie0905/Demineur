@@ -189,7 +189,7 @@ private void desactiverBoutons() {
 
         PanneauGrille.setBackground(new java.awt.Color(51, 51, 255));
         PanneauGrille.setLayout(new java.awt.GridLayout(10, 10));
-        getContentPane().add(PanneauGrille, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 400));
+        getContentPane().add(PanneauGrille, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
