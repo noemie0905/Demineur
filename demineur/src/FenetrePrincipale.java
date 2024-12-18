@@ -84,7 +84,7 @@ private void boutonClique(int ligne, int colonne) {
     mettreAJourAffichageCellule(ligne, colonne);  // Mettre à jour l'affichage de cette cellule
 
    if (cellule.getPresenceBombe()) {
-    boutonsGrille[ligne][colonne].setText("B");
+    boutonsGrille[ligne][colonne].setText("\uD83D\uDCA3");
     JOptionPane.showMessageDialog(this, "Oh non ! Vous avez cliqué sur une bombe !", "Défaite", JOptionPane.ERROR_MESSAGE);
     afficherGrilleComplete();
     desactiverBoutons(); // Désactiver tous les boutons
@@ -138,7 +138,8 @@ if (verifierVictoire()) {
 bouton.setOpaque(true);
     if (cellule.getRevelerCellule()) {
         if (cellule.getPresenceBombe()) {
-            bouton.setText("B");
+            
+            bouton.setText("\uD83D\uDCA3");
         } else if (cellule.getNbBombesAdjacentes() > 0) {
             bouton.setText(String.valueOf(cellule.getNbBombesAdjacentes()));
             bouton.setBackground(Color.green);
