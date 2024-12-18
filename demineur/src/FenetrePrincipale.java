@@ -69,7 +69,7 @@ public class FenetrePrincipale extends javax.swing.JFrame {
 private void boutonClique(int ligne, int colonne) {
     if (!premiereCaseCliquee) {
             Cellule cellule = grilleDeJeu.getMatriceCellules(ligne, colonne);
-            while (cellule.getPresenceBombe() || cellule.getNbBombesAdjacentes() > 0) {
+            while (cellule.getPresenceBombe()) {
                 JOptionPane.showMessageDialog(this, "Choisissez une autre case !", "Erreur case minée", JOptionPane.WARNING_MESSAGE);
                 return;
             }
