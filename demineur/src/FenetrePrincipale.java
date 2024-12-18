@@ -137,7 +137,7 @@ if (verifierVictoire()) {
 
     if (cellule.getRevelerCellule()) {
         if (cellule.getPresenceBombe()) {
-            bouton.setText("B");
+            bouton.setText("\\uD83D\\uDCA3");
         } else if (cellule.getNbBombesAdjacentes() > 0) {
             bouton.setText(String.valueOf(cellule.getNbBombesAdjacentes()));
         } else {

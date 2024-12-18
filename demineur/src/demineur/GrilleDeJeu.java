@@ -143,7 +143,7 @@ public String toString() {
             if (!cellule.getRevelerCellule()) {
                 grille.append("?"); // Cellule non révélée
             } else if (cellule.getPresenceBombe()) {
-                grille.append("B"); // Cellule contenant une bombe
+                grille.append("\\uD83D\\uDCA3"); // Cellule contenant une bombe
             } else if (cellule.getNbBombesAdjacentes() > 0) {
                 grille.append(cellule.getNbBombesAdjacentes()); // Nombre de bombes adjacentes
             } else {
