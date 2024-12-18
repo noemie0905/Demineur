@@ -43,7 +43,7 @@ public class Menu extends javax.swing.JFrame {
         });
 
         jButton2.setBackground(new java.awt.Color(255, 153, 153));
-        jButton2.setText("Regles");
+        jButton2.setText("Règles");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);

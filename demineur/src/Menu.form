@@ -62,7 +62,7 @@
         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
           <Color blue="99" green="99" red="ff" type="rgb"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="Regles"/>
+        <Property name="text" type="java.lang.String" value="R&#xe8;gles"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
