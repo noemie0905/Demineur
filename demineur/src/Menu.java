@@ -79,7 +79,7 @@ public class Menu extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
          // Lancer la fenêtre du jeu après le menu
         this.setVisible(false);  // Masque la fenêtre du menu
-        new FenetrePrincipale(10,10,10).setVisible(true);  // Lancer la fenêtre du jeu (assure-toi que la classe JeuFenetre existe)
+        new FenetrePrincipale(13,13,20).setVisible(true);  // Lancer la fenêtre du jeu (assure-toi que la classe JeuFenetre existe)
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
